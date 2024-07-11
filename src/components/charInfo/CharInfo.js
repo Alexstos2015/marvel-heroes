@@ -39,6 +39,8 @@ class  CharInfo extends Component {
             .getCharacter(charId)
             .then(this.onCharLoaded)
             .catch(this.onError);
+    
+        this.foo.bar = 0;
     }
 
     onCharLoading = (char) => {
@@ -83,10 +85,15 @@ class  CharInfo extends Component {
 const View = ({char}) => {
     const {name, description, thumbnail, homepage, wiki, comics} = char;
 
+    let imgStyle = {'objectFit' : 'cover'};
+    if (thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg'){
+        imgStyle = {'objectFit' : 'contain'};
+    } 
+
     return (
         <>
             <div className="char__basics">
-                    <img src={thumbnail} alt={name}/>
+                    <img src={thumbnail} alt={name} style={imgStyle}/>
                     <div>
                         <div className="char__info-name">{name}</div>
                         <div className="char__btns">
@@ -100,12 +107,14 @@ const View = ({char}) => {
                     </div>
                 </div>
                 <div className="char__descr">
-                    In Norse mythology, Loki is a god or jötunn (or both). Loki is the son of Fárbauti and Laufey, and the brother of Helblindi and Býleistr. By the jötunn Angrboða, Loki is the father of Hel, the wolf Fenrir, and the world serpent Jörmungandr. By Sigyn, Loki is the father of Nari and/or Narfi and with the stallion Svaðilfari as the father, Loki gave birth—in the form of a mare—to the eight-legged horse Sleipnir. In addition, Loki is referred to as the father of Váli in the Prose Edda.
+                    {description}
                 </div>
                 <div className="char__comics">Comics:</div>
                 <ul className="char__comics-list">
+                    {comics.length > 0 ? null : "There are no comics for this character"};
                     {
                         comics.map((item, i) => {
+                            if (i > 9) return;
                             return (
                                 <li key={i}>
                                     {item.name}
